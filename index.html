@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rodica Loisel — Professor of Economics, IAE Nantes</title>
+<style>
+  :root{
+    --bg:#FAFAF8;
+    --surface:#FFFFFF;
+    --ink:#151A1E;
+    --muted:#5B6470;
+    --faint:#8A93A0;
+    --line:#E5E2DA;
+    --accent:#0F5E56;      /* petrol teal — power grid / ocean */
+    --accent-soft:#E4EEEC;
+    --accent2:#C1793F;     /* copper — energy warmth */
+    --accent2-soft:#F5E9DC;
+    --font-display: 'Iowan Old Style','Palatino Linotype','Book Antiqua',Georgia,serif;
+    --font-body: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --font-mono: ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+  .layout{display:flex;max-width:1280px;margin:0 auto;}
+
+  /* ---- Sidebar ---- */
+  .sidebar{
+    width:280px;flex-shrink:0;
+    position:sticky;top:0;height:100vh;
+    padding:44px 28px;
+    border-right:1px solid var(--line);
+    display:flex;flex-direction:column;
+    overflow-y:auto;
+  }
+  .sidebar .eyebrow{
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--accent2);margin-bottom:6px;
+  }
+  .sidebar h1{
+    font-family:var(--font-display);font-size:28px;line-height:1.15;
+    margin:0 0 4px;font-weight:600;
+  }
+  .sidebar .role{color:var(--muted);font-size:14px;margin-bottom:2px;}
+  .sidebar .affil{color:var(--faint);font-size:13px;margin-bottom:10px;}
+  .sidebar .fields{color:var(--muted);font-size:12.5px;line-height:1.5;margin-bottom:8px;}
+  .sidebar .fields:last-of-type{margin-bottom:22px;}
+  .sidebar nav{margin-top:8px;}
+  .sidebar nav a{
+    display:block;font-size:13.5px;color:var(--ink);padding:7px 0;
+    border-bottom:1px solid transparent;
+  }
+  .sidebar nav a:hover{color:var(--accent);text-decoration:none;}
+  .sidebar .meta{margin-top:auto;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);}
+  .sidebar .meta div{margin-bottom:6px;word-break:break-word;}
+  .hindex{
+    display:inline-flex;align-items:baseline;gap:6px;
+    background:var(--accent-soft);color:var(--accent);
+    padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;margin-top:10px;
+  }
+  .hindex span{font-family:var(--font-mono);}
+
+  /* ---- Main ---- */
+  main{flex:1;min-width:0;padding:44px 56px 100px;}
+  section{margin-bottom:64px;scroll-margin-top:24px;}
+  .section-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;}
+  .section-head .num{font-family:var(--font-mono);font-size:12px;color:var(--accent2);}
+  .section-head h2{
+    font-family:var(--font-display);font-size:22px;font-weight:600;margin:0;
+  }
+  .section-head::after{
+    content:"";flex:1;height:1px;background:var(--line);
+  }
+
+  /* Hero */
+  .hero{padding-top:6px;}
+  .hero p.lede{
+    font-family:var(--font-display);font-size:20px;line-height:1.5;
+    max-width:640px;color:var(--ink);margin:0 0 34px;
+  }
+  .hero p.lede em{font-style:normal;color:var(--accent);}
+
+  /* Research thread — signature element */
+  .thread{position:relative;margin:0 0 8px;padding-top:6px;}
+  .thread-line{
+    position:absolute;left:0;right:0;top:22px;height:1px;background:var(--line);
+  }
+  .thread-track{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:8px;position:relative;
+  }
+  .thread-node{position:relative;padding-top:0;}
+  .thread-node .dot{
+    width:9px;height:9px;border-radius:50%;background:var(--accent);
+    border:2px solid var(--bg);position:relative;z-index:1;margin-bottom:14px;
+  }
+  .thread-node .yr{font-family:var(--font-mono);font-size:11.5px;color:var(--accent2);display:block;margin-bottom:3px;}
+  .thread-node .lbl{font-size:13px;color:var(--ink);line-height:1.35;padding-right:6px;}
+
+  /* Timeline (experience/education) */
+  .tl{border-left:1px solid var(--line);padding-left:24px;}
+  .tl-item{position:relative;padding-bottom:20px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:"";position:absolute;left:-29px;top:5px;width:8px;height:8px;
+    border-radius:50%;background:var(--accent2);
+  }
+  .tl-item .yr{font-family:var(--font-mono);font-size:12.5px;color:var(--accent2);font-weight:600;}
+  .tl-item .ttl{font-weight:600;font-size:15px;margin:2px 0 1px;}
+  .tl-item .sub{color:var(--muted);font-size:13.5px;}
+  .tl-item .desc{color:var(--muted);font-size:13.5px;font-style:italic;margin-top:3px;max-width:520px;}
+
+  /* Publications */
+  .pub-list{display:flex;flex-direction:column;}
+  .pub{
+    display:grid;grid-template-columns:52px 1fr auto;gap:16px;
+    padding:16px 0;border-bottom:1px solid var(--line);align-items:start;
+  }
+  .pub:first-child{padding-top:0;}
+  .pub .yr{font-family:var(--font-mono);font-size:13px;color:var(--faint);padding-top:2px;}
+  .pub .body b{font-weight:700;}
+  .pub .title{font-size:14.5px;margin:0 0 3px;line-height:1.45;}
+  .pub .venue{font-size:13px;color:var(--muted);font-style:italic;}
+  .pub .venue a{color:var(--muted);}
+  .badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;align-self:start;}
+  .badge{
+    font-family:var(--font-mono);font-size:10.5px;padding:3px 8px;border-radius:20px;
+    white-space:nowrap;font-weight:600;letter-spacing:.02em;
+  }
+  .badge.astar{background:var(--accent);color:#fff;}
+  .badge.a{background:var(--accent-soft);color:var(--accent);}
+  .badge.b{background:var(--accent2-soft);color:var(--accent2);}
+  .badge.c{background:#F0EEE9;color:var(--muted);}
+  .badge.q1{background:#EFEDE6;color:var(--muted);border:1px solid var(--line);}
+
+  .filter-row{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+  .filter-btn{
+    font-family:var(--font-mono);font-size:11.5px;padding:6px 12px;border-radius:20px;
+    border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;
+  }
+  .filter-btn.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+
+  /* simple lists */
+  .plain-list{list-style:none;margin:0;padding:0;}
+  .plain-list li{
+    padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.55;
+  }
+  .plain-list li:first-child{padding-top:0;}
+  .plain-list li:last-child{border-bottom:none;}
+  .plain-list .tag{
+    font-family:var(--font-mono);font-size:11px;color:var(--accent2);margin-right:8px;
+  }
+  .plain-list a{color:var(--ink);border-bottom:1px dotted var(--faint);}
+  .plain-list a:hover{color:var(--accent);}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;}
+  @media (max-width:900px){.two-col{grid-template-columns:1fr;}}
+
+  .tag-cloud{display:flex;flex-wrap:wrap;gap:8px;}
+  .tag-cloud span{
+    font-size:12.5px;background:var(--surface);border:1px solid var(--line);
+    padding:6px 12px;border-radius:20px;color:var(--muted);
+  }
+
+  .grant{padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .grant:first-child{padding-top:0;}
+  .grant:last-child{border-bottom:none;}
+  .grant .amt{font-family:var(--font-mono);font-size:11.5px;color:var(--accent2);}
+
+  footer{
+    padding:32px 56px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;
+  }
+
+  /* mobile nav */
+  .mobile-nav-toggle{display:none;}
+
+  @media (max-width:880px){
+    .layout{flex-direction:column;}
+    .sidebar{
+      position:relative;width:100%;height:auto;border-right:none;
+      border-bottom:1px solid var(--line);padding:28px 24px;
+    }
+    .sidebar nav{display:none;}
+    .sidebar .meta{margin-top:16px;padding-top:16px;}
+    main{padding:32px 24px 80px;}
+    .thread-track{grid-template-columns:1fr;gap:18px;}
+    .thread-line{display:none;}
+    .pub{grid-template-columns:1fr;gap:6px;}
+    .pub .yr{order:0;}
+    .badges{justify-content:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div>
+      <div class="eyebrow">Curriculum Vitae</div>
+      <h1>Rodica Loisel</h1>
+      <div class="role">Professor of Economics — IAE Nantes</div>
+      <div class="affil" style="margin-bottom:4px;"><a href="mailto:Rodica.loisel@univ-nantes.fr" style="color:var(--faint);">Rodica.loisel@univ-nantes.fr</a></div>
+      <div class="affil">Nantes Université · LEMNA (EA 4272)</div>
+      <div class="fields">Energy &amp; environmental economics — power plant modelling, French electricity mix scenario-building, fiscal policy &amp; carbon markets applied to the power and shipping sectors.</div>
+      <div class="fields">Nuclear &amp; renewables; energy storage economics — pumped hydro (STEP), CAES, hydrogen &amp; electrolyser infrastructure.</div>
+    </div>
+    <nav>
+      <a href="#top">Overview</a>
+      <a href="#experience">Experience &amp; Education</a>
+      <a href="#teaching">Teaching</a>
+      <a href="#responsibilities">Institutional Responsibilities</a>
+      <a href="#publications">Publications</a>
+      <a href="#papers">Working Papers</a>
+      <a href="#contracts">Research Contracts</a>
+      <a href="#phd">PhD Supervision</a>
+      <a href="#internships">Internship Supervision</a>
+      <a href="#service">Scientific Service</a>
+      <a href="#conferences">Conferences</a>
+    </nav>
+    <div class="meta">
+      <div>Chemin de la Censive du Tertre, Nantes</div>
+      <div><a href="https://www.univ-nantes.fr/fr/rodica-loisel-1025555.kjsp" target="_blank" rel="noopener">Faculty page ↗</a></div>
+      <div><a href="https://orcid.org/0000-0003-0437-6729" target="_blank" rel="noopener">ORCID 0000-0003-0437-6729 ↗</a></div>
+      <div><a href="https://scholar.google.fr/citations?view_op=list_works&hl=fr&user=8s0ZJvMAAAAJ" target="_blank" rel="noopener">Google Scholar ↗</a></div>
+      <div>IDHal — rodica-loisel</div>
+      <div style="color:var(--faint);">h-index 14 (Google Scholar)</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main id="top">
+    <section id="experience" style="padding-top:6px;">
+      <div class="section-head" style="margin-top:0;"><span class="num">01</span><h2>Experience &amp; Education</h2></div>
+      <div class="two-col">
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 14px;color:var(--muted);">Professional experience</h3>
+          <div class="tl" id="exp-tl"></div>
+        </div>
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 14px;color:var(--muted);">Education</h3>
+          <div class="tl" id="edu-tl"></div>
+        </div>
+      </div>
+    </section>
+    <section id="teaching">
+      <div class="section-head"><span class="num">02</span><h2>Teaching</h2></div>
+      <div class="tag-cloud" id="teaching-tags"></div>
+      <div class="two-col" style="margin-top:28px;">
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 8px;color:var(--muted);">Pedagogical innovation &amp; e-learning</h3>
+          <p style="font-size:14px;color:var(--muted);">2025 — Digital resource created for the European alliance UN-eSEA: <em>"L'économie du navire à voile."</em> <a href="https://mediaserver.univ-nantes.fr/videos/rodica-loisel_leconomie-du-navire-a-voilemp4/" target="_blank" rel="noopener">Watch ↗</a></p>
+        </div>
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 8px;color:var(--muted);">International &amp; interdisciplinary</h3>
+          <p style="font-size:14px;color:var(--muted);">2026 — EU-CORE Winter School, Master Erasmus Mundus <em>Contrôle des systèmes de l'énergie renouvelable,</em> École Centrale Nantes — <em>The Economics of Renewable Energies. The Economics of Storage.</em></p>
+          <p style="font-size:14px;color:var(--muted);margin-top:8px;">2025 — Winter School, Master E-Mat — <em>Défis industriels en économie circulaire.</em> <a href="https://sciences-techniques.univ-nantes.fr/formations/masters/cursus-master-et-doctorat-materiaux-innovants-et-systemes-energetiques-e-mat-niveau-master" target="_blank" rel="noopener">Link ↗</a></p>
+        </div>
+      </div>
+    </section>
+    <section id="responsibilities">
+      <div class="section-head"><span class="num">03</span><h2>Institutional Responsibilities</h2></div>
+
+      <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 8px;color:var(--muted);">Programme leadership</h3>
+      <ul class="plain-list" id="resp-programme" style="margin-bottom:32px;"></ul>
+
+      <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 8px;color:var(--muted);">Institutional &amp; scientific governance</h3>
+      <ul class="plain-list" id="resp-governance" style="margin-bottom:32px;"></ul>
+
+      <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 8px;color:var(--muted);">Research axis coordination</h3>
+      <ul class="plain-list" id="resp-axis"></ul>
+    </section>
+    <section id="publications">
+      <div class="section-head"><span class="num">04</span><h2>Peer-Reviewed Publications</h2></div>
+      <div class="filter-row" id="pub-filters"></div>
+      <div class="pub-list" id="pub-list"></div>
+    </section>
+    <section id="papers">
+      <div class="section-head"><span class="num">05</span><h2>Working Papers &amp; Submissions</h2></div>
+      <div class="two-col">
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 8px;color:var(--muted);">Under revision</h3>
+          <ul class="plain-list" id="under-revision"></ul>
+        </div>
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 8px;color:var(--muted);">Ongoing</h3>
+          <ul class="plain-list" id="ongoing-wp"></ul>
+        </div>
+      </div>
+      <h3 style="font-family:var(--font-display);font-size:15px;margin:32px 0 8px;color:var(--muted);">Open-access working papers &amp; proceedings</h3>
+      <ul class="plain-list" id="oa-wp"></ul>
+      <h3 style="font-family:var(--font-display);font-size:15px;margin:32px 0 8px;color:var(--muted);">Collective works &amp; book chapters</h3>
+      <ul class="plain-list" id="collective"></ul>
+    </section>
+    <section id="contracts">
+      <div class="section-head"><span class="num">06</span><h2>Research Contracts</h2></div>
+      <div id="contract-list"></div>
+    </section>
+    <section id="phd">
+      <div class="section-head"><span class="num">07</span><h2>PhD Supervision</h2></div>
+      <ul class="plain-list" id="phd-list"></ul>
+    </section>
+    <section id="internships">
+      <div class="section-head"><span class="num">08</span><h2>Internship Supervision</h2></div>
+      <ul class="plain-list" id="internship-list"></ul>
+    </section>
+    <section id="service">
+      <div class="section-head"><span class="num">09</span><h2>Scientific Service</h2></div>
+
+      <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 10px;color:var(--muted);">Reviewer for</h3>
+      <div class="tag-cloud" id="reviewer-tags" style="margin-bottom:32px;"></div>
+
+      <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 8px;color:var(--muted);">Project &amp; grant review</h3>
+      <ul class="plain-list" id="grant-review" style="margin-bottom:32px;"></ul>
+
+      <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 8px;color:var(--muted);">Recruitment committees (Maître de Conférences)</h3>
+      <ul class="plain-list" id="committees" style="margin-bottom:32px;"></ul>
+
+      <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 8px;color:var(--muted);">PhD / HDR juries</h3>
+      <ul class="plain-list" id="juries" style="margin-bottom:32px;"></ul>
+
+      <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 8px;color:var(--muted);">Thesis monitoring committees (CSI)</h3>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:32px;" id="csi"></p>
+
+      <h3 style="font-family:var(--font-display);font-size:15px;margin:0 0 8px;color:var(--muted);">Co-organisation of conferences</h3>
+      <ul class="plain-list" id="coorg-list"></ul>
+    </section>
+    <section id="conferences">
+      <div class="section-head"><span class="num">10</span><h2>Conferences, Workshops &amp; Outreach</h2></div>
+      <ul class="plain-list" id="conf-list"></ul>
+    </section>
+
+    <!-- EXPERIENCE & EDUCATION -->
+
+    <!-- PUBLICATIONS -->
+
+    <!-- WORKING PAPERS -->
+
+    <!-- CONTRACTS -->
+
+    <!-- CONFERENCES -->
+
+    <!-- TEACHING -->
+
+    <!-- INSTITUTIONAL RESPONSIBILITIES -->
+
+    <!-- PHD SUPERVISION -->
+
+    <!-- INTERNSHIP SUPERVISION -->
+
+    <!-- SERVICE -->
+
+  </main>
+</div>
+
+<footer>Rodica Loisel — Professor of Economics, IAE Nantes Université · LEMNA (EA 4272) · Updated 2026</footer>
+
+<script>
+/* ---------------- DATA ---------------- */
+
+const experience = [
+  {yr:"Since 2025", ttl:"Professor of Economics", sub:"IAE Nantes Université"},
+  {yr:"2013–2025", ttl:"Associate Professor", sub:"IAE Université de Nantes"},
+  {yr:"2013", ttl:"Energy Analyst", sub:"Energy Regulatory Commission (CRE), Paris"},
+  {yr:"2009–2012", ttl:"Scientific Officer", sub:"European Commission, JRC, Netherlands"},
+  {yr:"2003–2007", ttl:"Lecturer", sub:"University of Rouen, France"},
+];
+
+const education = [
+  {yr:"2020", ttl:"HDR — Habilitation to Supervise PhD Theses", sub:"Nantes Université", desc:"“The Economics of Nuclear Energy: The Interaction between Nuclear and Renewables in Deregulated Electricity Markets”"},
+  {yr:"2007–2009", ttl:"Post-doctoral Fellow", sub:"CIRED-CNRS, Nogent-sur-Marne, France"},
+  {yr:"2007", ttl:"PhD in Energy Economics", sub:"University of Rouen, France", desc:"“Energy Policies and Economic Options of Climate Strategies in Romania: A Computable General Equilibrium Modeling Approach”"},
+  {yr:"2002", ttl:"Master in Economics (D.E.A.)", sub:"Dynamics of Industrial and Financial Strategies, University of Rouen"},
+];
+
+// rank: astar | a | b | c | q1
+const publications = [
+  {yr:2026, authors:"Garnier A., P. Marty, <b>R. Loisel</b>", title:"Modelling the shipping transition: Forecasting merchant fleet emissions to 2050", venue:"Transportation Research Interdisciplinary Perspectives, 39:102142", doi:"https://doi.org/10.1016/j.trip.2026.102142", rank:"q1"},
+  {yr:2026, authors:"Debille A., L. Lemiale, <b>R. Loisel</b>, T. Neu, D. Guyomarch", title:"Modeling renewable power systems on islands: Can renewables and energy storage fully replace fossil-fired power plants?", venue:"Journal of Energy Storage, 155(A):121450", doi:"https://doi.org/10.1016/j.est.2026.121450", rank:"q1"},
+  {yr:2026, authors:"Guionie R., L. Lemiale, <b>R. Loisel</b>", title:"Building a hydrogen economy: Does France have the industrial capacity for a low-carbon transition?", venue:"Journal of Policy Modeling, 1(48):130–151", doi:"https://doi.org/10.1016/j.jpolmod.2025.11.001", rank:"c"},
+  {yr:2025, authors:"<b>Loisel R.</b>", title:"The value of load-following in the French power system: does nuclear power need a market complement?", venue:"Revue d'Économie Politique, 3(135):455–487", doi:"https://doi.org/10.3917/redp.353.0455", rank:"a"},
+  {yr:2025, authors:"Diatta R., <b>R. Loisel</b>, L. Richefort", title:"Demand response in power off-grid microgrids in Nigeria: a game theory approach", venue:"Global Energy Interconnection, 8(4):581–597", doi:"https://doi.org/10.1016/j.gloei.2025.06.003", rank:"q1"},
+  {yr:2023, authors:"<b>Loisel R.</b>, L. Lemiale", title:"Scaling-up hydrogen from residual power loads in France: Learning rates versus economies of scale strategies", venue:"Journal of Energy Markets, 15(4):1–23", doi:"http://doi.org/10.21314/JEM.2023.019", rank:"c"},
+  {yr:2022, authors:"<b>Loisel R.</b>, L. Lemiale, S. Mima, A. Bidaud", title:"Strategies for short-term intermittency in long-term scenarios in the French power system", venue:"Energy Policy, 169:113182", doi:"https://doi.org/10.1016/j.enpol.2022.113182", rank:"a"},
+  {yr:2021, authors:"<b>Loisel R.</b>, C. Simon", title:"Market strategies for large-scale energy storage: vertical integration versus stand-alone player", venue:"Energy Policy, 151:112169", doi:"https://doi.org/10.1016/j.enpol.2021.112169", rank:"a"},
+  {yr:2018, authors:"<b>Loisel R.</b>, V. Alexeeva, A. Zucker, D. Shropshire", title:"Load-following with nuclear power: market effects and welfare implications", venue:"Progress in Nuclear Energy, 109:280–292", doi:"https://doi.org/10.1016/j.pnucene.2018.08.011", rank:"q1"},
+  {yr:2018, authors:"<b>Loisel R.</b>, L. Lemiale", title:"Comparative energy scenarios: solving the capacity sizing problem on the French Atlantic Island of Yeu", venue:"Renewable & Sustainable Energy Reviews, 88:54–67", doi:"https://doi.org/10.1016/j.rser.2018.02.017", rank:"q1"},
+  {yr:2018, authors:"Loisel R., M. Sanchez, F. Schoefs, A. Gaillard", title:"Integration of tidal range energy with undersea pumped storage", venue:"Renewable Energy, 126:38–48", doi:"https://doi.org/10.1016/j.renene.2018.03.037", rank:"q1"},
+  {yr:2015, authors:"<b>Loisel R.</b>, L. Baranger, N. Chemouri, S. Pardo", title:"Economic evaluation of hybrid off-shore wind power and hydrogen storage system", venue:"Int. J. of Hydrogen Energy, 40(21):6727–39", doi:"https://doi.org/10.1016/j.ijhydene.2015.03.117", rank:"q1"},
+  {yr:2014, authors:"<b>Loisel R.</b>, G. Pasaoglu, C. Thiel", title:"Large-scale deployment of Electrical Vehicles in Germany by 2030: grid-to-vehicle and vehicle-to-grid concepts", venue:"Energy Policy, 65:432–443", doi:"https://doi.org/10.1016/j.enpol.2013.10.029", rank:"a"},
+  {yr:2013, authors:"Krajai G., D. Lonar, N. Dui, R. Lacal, <b>R. Loisel</b>, I. Raguzin", title:"Large-scale integration of wind energy by financial mechanisms for support of pumped hydro storage installations", venue:"Applied Energy, 101:161–171", doi:"http://dx.doi.org/10.1016/j.apenergy.2012.07.007", rank:"q1"},
+  {yr:2012, authors:"<b>Loisel R.</b>", title:"Power system flexibility with electricity storage technologies: a technical-economic assessment of Compressed Air Energy Storage", venue:"Int. J. of Electrical Power & Energy Systems, 42:542–552", doi:"http://dx.doi.org/10.1016/j.ijepes.2012.04.058", rank:"q1"},
+  {yr:2011, authors:"<b>Loisel R.</b>, A. Mercier, C. Gatzen, N. Elms", title:"Market evaluation of hybrid wind-storage power systems in case of balancing responsibilities", venue:"Renewable & Sustainable Energy Reviews, 15:5003–5012", doi:"http://dx.doi.org/10.1016/j.rser.2011.07.054", rank:"q1"},
+  {yr:2011, authors:"Ha-Duong M., <b>Loisel R.</b>", title:"Actuarial risk assessment of expected fatalities attributable to carbon capture and storage in 2050", venue:"Int. J. of Greenhouse Gas Control, 5:1346–1358", doi:"http://dx.doi.org/10.1016/j.ijggc.2011.07.004", rank:"q1"},
+  {yr:2010, authors:"<b>Loisel R.</b>, A. Mercier, C. Gatzen, N. Elms, H. Petric", title:"Valuation framework for large-scale electricity storage in a case with wind curtailment", venue:"Energy Policy, 38(11):7323–7337", doi:"http://dx.doi.org/10.1016/j.enpol.2010.08.007", rank:"a"},
+  {yr:2010, authors:"<b>Loisel R.</b>", title:"Quotas allocation rules in Romania assessed by a dynamic CGE model", venue:"Climate Policy, 10(1):87–102", doi:"http://dx.doi.org/10.3763/cpol.2008.0557", rank:"a"},
+  {yr:2009, authors:"<b>Loisel R.</b>", title:"Environmental climate instruments in Romania: A comparative approach by dynamic CGE modelling", venue:"Energy Policy, 37(6):2190–04", doi:"http://dx.doi.org/10.1016/j.enpol.2009.02.001", rank:"a"},
+  {yr:2009, authors:"Ha-Duong M., <b>R. Loisel</b>", title:"Zero is the only acceptable leakage rate for geologically stored CO2: an editorial comment", venue:"Climatic Change, 93(3):311–317", doi:"http://dx.doi.org/10.1007/s10584-009-9560-z", rank:"b"},
+  {yr:2007, authors:"Sandu-Loisel R.", title:"Hardened budget constraints in Romania: An approach by CGE modeling", venue:"Post-Communist Economies, 19(1):93–115", doi:"https://doi.org/10.1080/14631370601163269", rank:"a"},
+];
+
+const rankLabels = {astar:"A*", a:"A", b:"B", c:"C", q1:"Q1 SJR"};
+
+const underRevision = [
+  "Debille A., <b>R. Loisel</b>, L. Lemiale, T. Neu, D. Guyomarch — Energy storage economics: key parameters for tool building. <i>Journal of Energy Markets.</i> Under evaluation (second revision).",
+  "Heslan G., <b>R. Loisel</b>, C. Bagoulla, P. Marty — Decarbonizing shipping trade: short-term adaptation and long-term abatement strategies. <i>Energy Policy.</i> Under evaluation.",
+];
+
+const ongoingWP = [
+  "<b>Loisel R.</b>, P. Marty, L. Lemiale, A. Garnier — Modelling nuclear SMR-powered ships: from propulsion to energy markets.",
+  "<b>Loisel R.</b>, C. Bagoulla, P. Marty, N. Melcion-Fabre, A. Garnier, G. Heslan — Carbon tax under oligopoly market power: pass-through, concentration and contestability.",
+  "Guionie R., <b>R. Loisel</b>, L. Lemiale — Hydrogen industry building potential. Insights from a three-country comparison. In progress (European Journal of Comparative Economics).",
+];
+
+const oaWP = [
+  "<b>Loisel R.</b>, L. Lemiale, D. Borie (2025) — Peer-to-Peer Energy Trade by Means of Game Theory: The Value of Profusion. <i>IEEE Explorer.</i> <a href='https://doi.org/10.1109/FES65767.2025.11341826' target='_blank' rel='noopener'>doi ↗</a>",
+  "<b>Loisel R.</b>, L. Lemiale, D. Borie, L. Richefort (2025) — Economic Indicators for PV Solar Power Sizing: Application to French Households. <i>IEEE Explorer.</i> <a href='https://doi.org/10.1109/FES65767.2025.11341856' target='_blank' rel='noopener'>doi ↗</a>",
+  "Heslan G., <b>Loisel R.</b>, Bagoulla C., Marty P. (2024) — Décarboner le transport maritime : arbitrage entre mesures opérationnelles et mesures techniques. <a href='https://www.faee.fr/files/file/aee/seminaires/2024/Heslan_Fullpaper.pdf' target='_blank' rel='noopener'>Paper ↗</a>",
+  "Guionie R., <b>Loisel R.</b>, Lemiale L., Guerineau M. (2023) — Industrial planning with input-output models: empirical evidence from low-carbon hydrogen in France. Working Papers hal-04011936.",
+  "<b>R. Loisel</b>, L. Lemiale (2023) — Welfare implications of renewable energy communities: Individual versus collective approach. <a href='https://hal.science/hal-04211705' target='_blank' rel='noopener'>hal.science ↗</a>",
+  "Woznicki M., G. Le Solliec, <b>R. Loisel</b> (2020) — Far off-shore wind energy-based hydrogen production: Technological assessment and market valuation designs. <i>Journal of Physics: Conference Series</i> 1669(1). Peer-reviewed, SJR ranked.",
+  "Lemiale L., R. <b>Loisel</b>, S. Bourguet, A. Roy, M. Machmoun (2019) — Building sustainable power mix in small island grids: a multi-criteria analysis. IEEE Transactions on Engineering Management, OSES.",
+  "Debille A., C. Simon, R. <b>Loisel</b>, D. Guyomarc'h, T. Neu, L. Lemiale (2019) — Underwater CAES assessment: economic and engineering references for energy mix sizing in island grids. IEEE OSES.",
+  "<b>Loisel R.</b>, C. Simon, M. Woznicki, M. Guérineau, L. Baranger, E. Schaeffer, L. Lemiale, G. Le Solliec (2019) — Green hydrogen multi-market optimisation: real complementarities or temporary transaction costs? IEEE OSES.",
+  "Raffray M., A. Babarit, <b>Loisel R.</b> (2018) — Comparison of Ocean Renewable Energy TRL Development between Interpolated Values and Empirical Data.",
+  "<b>Loisel R.</b>, D. Shropshire, C. Thiel, A. Mercier (2014) — Flexibility assessment in nuclear energy dominated systems with increased wind energy shares.",
+];
+
+const collective = [
+  "<b>Loisel R.</b>, L. Lemiale (2023) — Scénarios prospectifs à l'horizon 2050. In <i>Économie du nucléaire</i> (J. Percebois &amp; N. Thiollière, eds.), ISTE-Éditions.",
+  "IAEA (2018) — Economic aspects of load following in flexible operation. In <i>Non-baseload Operation in Nuclear Power Plants,</i> IAEA Nuclear Energy Series NP-T-3.23, pp. 159–164.",
+  "<b>Loisel R.</b>, T. Vallée, P. Guillotreau (2017) — Quels indicateurs pour une juste valorisation de l'environnement ? In <i>Environnement et développement durable dans les politiques de l'Union européenne,</i> Presses Universitaires de Rennes.",
+  "<b>Loisel R.</b> (2012) — Compressed Air Energy Storage Systems. In <i>Electrical Storage Technologies,</i> EERA Smart Grids, Deliverable 4.1.",
+  "<b>Loisel R.</b> (2011) — Electricity Storage in the Power Sector. In <i>Technology Map of the SET-Plan,</i> EUR 24979.",
+  "Petric H., <b>Loisel R.</b>, Pasaoglu G., Mercier A. (2010) — Evaluation of the TIMES model to expand SETIS modelling capabilities. Internal Report EC/JRC/IE ESE.",
+  "Sandu R. — La politique environnementale des PECO : examen du cas de la Roumanie. In <i>L'élargissement de l'Union Européenne et la Roumanie,</i> Presses Universitaires du Havre et de Rouen, 1/2005, pp. 317–356.",
+];
+
+const contracts = [
+  {name:"NexT CARGO", period:"2023–2028", amt:"425 k€", desc:"Cluster on trajectories of shipping decarbonisation. Joint leadership Rodica Loisel (Nantes Université) – Pierre Marty (ECN)."},
+  {name:"LEAP-RE SMARTER", period:"", amt:"", desc:"Smart Energy Storage and AI-powered Management Technologies for Sustainable and Resilient Energy Communities. Technical Univ. of Cluj (leader); consortium France–Romania–Morocco–Tunisia. Under evaluation."},
+  {name:"REMARKS", period:"2024–2025", amt:"50 k€", desc:"REMORA Energy Market Solutions, WEAMEC."},
+  {name:"ANR JCJC OSIRMEH", period:"", amt:"", desc:"Optimisation sous incertitudes de stations de recharge pour mobilité électrique et hydrogène (led by Anthony Roy, IREENA)."},
+  {name:"LEAP-RE MiDiNA", period:"2023–2025", amt:"660 k€", desc:"Microgrids Development in North Africa. NU IREENA (leader); consortium France–Romania–Morocco. Long-Term Joint Research and Innovation Partnership on Renewable Energy — second evaluation phase."},
+  {name:"NeXT ORACLE", period:"2021–2023", amt:"419 k€", desc:"Offshore Wind Research Accelerator Cluster — ECN LHEEA (leader), CDMO–GeM–Ireena–Lemna–Letg–LS2N–Weamec."},
+  {name:"ANR OPHARM", period:"2021–2023", amt:"338 k€", desc:"FEM France Énergies Marines. Offshore hydrogen production: analysis and roadmap. Seanergy 2022 R&D poster award."},
+  {name:"Weamec EMA", period:"2020", amt:"6.4 k€", desc:"Eolien Market Agreements — LEMNA–WEAMEC–Région Pays de la Loire. Scénarisation du mix électrique français."},
+  {name:"PEPS-CNRS SCANNER", period:"2020", amt:"10 k€", desc:"Scenario Assessment of Nexus Nuclear Energy & Renewables — CNRS, LPSC-GAEL Grenoble, LEMNA."},
+  {name:"Ressourcement CEA-tech Pays de la Loire MHyWIND", period:"2018–2020", amt:"126 k€ (LEMNA 17 k€)", desc:"Dimensionnement et optimisation du pilotage d'une chaîne de production hydrogène couplée à un parc éolien offshore."},
+  {name:"AAP I + II GENOME", period:"2015–2018", amt:"160 k€ · project leader", desc:"Université de Nantes. Smart green island concept: technico-economic decision tools in support of local authorities' public choice."},
+  {name:"CNRS PrISE", period:"2016–2017", amt:"15 k€", desc:"Role and usages of nuclear scenarios. Leader Subatech Nantes, funded by CNRS."},
+  {name:"CNRS NEEDS–PERMIS", period:"2016–2017", amt:"10 k€", desc:"Nucléaire, Énergie, Environnement, Déchets et Société — Programme Exploratoire de Recherche de Méthodologies Innovantes pour les Scénarios Nucléaires."},
+  {name:"CNRS DIESE-CAUSE", period:"2016–2017", amt:"10 k€", desc:"Construction, Analyse et Utilisation des Scénarios Énergétiques Nucléaires. Leader Subatech Nantes."},
+  {name:"IUML Maréliennes", period:"2015", amt:"2.3 k€", desc:"Modélisation des systèmes hydrauliques en mer. Funded by IUML."},
+  {name:"NU PERLE 2", period:"2013–2014", amt:"18 k€ · project leader", desc:"Pôle d'Excellence de la Recherche Ligérienne en Énergie. Value chain of hydrogen storage."},
+  {name:"EU Market Opportunities for Electricity Storage", period:"2010", amt:"", desc:"EC2009/S 28-039848. Technical-economic evaluation of large-scale energy storage technologies in Europe."},
+  {name:"ATEsT", period:"2009–2012", amt:"", desc:"EC Grant Agreement 241382. Analysing Transition Planning and Systemic Energy Planning Tools for the Energy Technology Information System."},
+  {name:"ANR SOCECO2", period:"2008", amt:"", desc:"ANR-06-CO2-009. Economics and Sociology of Carbon Capture and Storage Technology."},
+];
+
+const conferences = [
+  "2026 IAME — International Association of Maritime Economists. R. Loisel et al. 1) Modelling nuclear SMR-powered ships: from propulsion to energy markets. 2) Carbon tax under oligopoly market power: pass-through, concentration and contestability. <a href='https://iame2026.com/' target='_blank' rel='noopener'>iame2026.com ↗</a>",
+  "2025 IAEE — Rodica Loisel, Juliette Morel. Power market uncertainties matter more than physical ones: a stochastic assessment of wind power value in France. Paris.",
+  "2024 IAEE — R. Loisel, L. Lemiale. Bargaining under non-cooperative trading for peer-to-peer energy communities. Istanbul, Turkey.",
+  "2023 FAERE — R. Guionie, R. Loisel, L. Lemiale. Industrial planning with input-output models: empirical evidence from low-carbon hydrogen in France. Montpellier.",
+  "2023 IAEE — R. Loisel, L. Lemiale. Welfare implications of renewable energy communities: Individual versus collective approach. Milan, Italy.",
+  "2022 EAERE — R. Diatta, R. Loisel, L. Richefort. Demand response in power off-grid microgrids in Nigeria: economic impacts with game theory. Rimini, Italy.",
+  "2022 IAEE — R. Guionie, R. Loisel, L. Lemiale, M. Guérineau. Strategies of decarbonation: applied industrial symbiosis to low-carbon hydrogen. Japan (online).",
+  "2022 IAEE — A. Debille, R. Loisel, L. Lemiale, T. Neu, D. Guyomarch. Energy storage valuation: volatility of cost, prices and methods. Japan (online).",
+  "2021 EAERE — Strategies for short-term intermittency in long-term scenarios in the French power system. Berlin (online).",
+  "2021 FAERE — Strategies for short-term intermittency in long-term scenarios in the French power system. Grenoble.",
+  "2019 FAERE — Nuclear and renewables in deregulated markets: do scenarios anticipate short-term intermittency? Paris.",
+  "2019 IAEE — Pumped hydro storage in France: stand-alone market player, TSO service provider, or EDF nuclear fleet support. Ljubljana, Slovenia.",
+  "2019 FAERE — Market pricing designs for power plants matching: the case of nuclear and renewables. Rennes.",
+  "2019 OSES — Building sustainable power mix in small island grids: a multi-criteria analysis. Brest.",
+  "2018 Technical Workshop on Fuel Cycle Simulation — Nuclear and renewables in deregulated markets: nuclear fuel cycle cost estimates with cross-disciplinary modelling.",
+  "2018 ESReDA Seminar — Comparative energy scenarios: solving the capacity sizing problem on the French Atlantic Island of Yeu. Nantes.",
+  "2017 EAERE — Load-following with nuclear power: market and social welfare implications. Athens.",
+  "2017 Seanergy Normandie — Smart Grids with Energy On-shore and Marine projects. R&D Poster Award.",
+  "2016 Dynamic Nuclear Cycle Technical Workshop, CNRS/IN2P3 — Economic assessment for renewable penetration in electricity mix. Paris.",
+  "2016 IAEE — Comparative scenarios in islanded systems: energy supply-storage sizing problem. Bergen, Norway.",
+  "2014 TEPP — Economic evaluation of hybrid off-shore wind power and hydrogen storage system. Nantes.",
+  "2026 Journées Scientifiques Nantes Université — Décarbonation du transport maritime. Cité des congrès.",
+  "2025 FES Future Energy Systems — Economic indicators for PV solar power sizing: application to French households. Cluj, Romania.",
+  "2025 FES Future Energy Systems — Peer-to-peer energy trade by means of game theory: the value of profusion. Cluj, Romania.",
+  "2025 Débord de Loire — Conférence interactive: “Le transport maritime : adieu carbone.” <a href='https://cargo-cluster.fr/rdv-dans-le-cadre-de-debord-de-loire' target='_blank' rel='noopener'>Link ↗</a>",
+  "2025 Matinée de la transition énergétique — Univ. Marie & Louis Pasteur, Réseau Eden-i. <a href='https://edeni-energies.com/wp-content/uploads/2025/05/25-05-01_Programme_Preliminaire_Matinee-2025.1.pdf' target='_blank' rel='noopener'>Programme ↗</a> · <a href='https://www.youtube.com/watch?v=GYOpjFFaTpA' target='_blank' rel='noopener'>Podcast ↗</a>",
+  "2024 CISTEM — Economic implications of renewable energy communities. Rabat, Morocco.",
+  "2024 Nuit Blanche des Chercheurs — Mini-conférence: “Transport maritime décarboné : il faut que ça change.” <a href='https://nbc.univ-nantes.fr/edition-2024/mini-conferences/mini-conferences-halle-6-ouest' target='_blank' rel='noopener'>Link ↗</a>",
+  "2024 UN News Grand Angle — Décarbonation, vers un transport maritime durable. <a href='https://new.express.adobe.com/webpage/G5Rn8Q4lh1p2B' target='_blank' rel='noopener'>Link ↗</a>",
+  "2023 ORACLE Colloque pluridisciplinaire — Modèle économique de l'éolien en mer. <a href='https://colloque-oracle-2024.sciencesconf.org/503069' target='_blank' rel='noopener'>Link ↗</a>",
+  "2022 WEAMEC Webinaire — Scénarisation du mix électrique en France. Avec James Pinder. <a href='https://www.youtube.com/watch?v=GGiwtLrg7OE' target='_blank' rel='noopener'>Podcast ↗</a>",
+  "2022 UN-e-SEA Nantes Université — Formation Croissance Bleue, Banque Populaire Grand Ouest. Webinaire Énergies Marines Renouvelables: valorisation des EMR, le cas de l'énergie éolienne.",
+  "2022 École d'été IUML — Mer et Énergies: défis du XXIᵉ siècle. L'économie de l'éolien en mer; l'économie du fret maritime par propulsion vélique.",
+  "2022 Nuit Blanche des Chercheurs — Atelier IUML: L'énergie de la mer, un monde sans limites ? <a href='https://nbc.univ-nantes.fr/edition-2022/ateliers-2022' target='_blank' rel='noopener'>Link ↗</a>",
+  "2021 Colloque Énergie du CNRS — Strategies for short-term intermittency in long-term scenarios in the French power system. <a href='https://colloqueenergie.sciencesconf.org/data/pages/ProgrammeDuColloqueEnergie2021.pdf' target='_blank' rel='noopener'>Programme ↗</a>",
+  "2021 Fête de la Science, Nantes — De la caravelle au voilier-cargo: l'économie du navire à voile. <a href='https://www.maison-hommes-techniques.fr/de-la-caravelle-au-voilier-cargo-leolien-au-coeur-de-nouvelles-decouvertes/' target='_blank' rel='noopener'>Link ↗</a>",
+  "2021 Symposium Hydrogène, Le Mans — Infrastructure H2 : économies d'échelle versus gains d'apprentissage. <a href='https://www.eluspslemans.fr/2021/09/3eme-edition-du-symposium-hydrogene-les-collectivites-territoriales-au-coeur-du-processus.html' target='_blank' rel='noopener'>Link ↗</a>",
+  "2021 Débat radiophonique — L'énergie nucléaire en Europe. Podcast, Euradio Nantes.",
+  "2019 IAEA Technical Meeting — Economics of Flexible Operation in Nuclear Power Plants, Vienna.",
+  "2019 Oceanext Nantes — Integration of tidal range energy with undersea pumped storage. <a href='https://oceanext-2019.sciencesconf.org/index7819.html?forward-action=index&forward-controller=index&lang=en' target='_blank' rel='noopener'>Link ↗</a>",
+  "2016 La Matinale EMR — WEAMEC, École Centrale, Univ. Nantes: le modèle économique et le contexte contractuel des EMR. <a href='https://www.ec-nantes.fr/servlet/com.univ.collaboratif.utils.LectureFichiergw?ID_FICHIER=1487186400673' target='_blank' rel='noopener'>Link ↗</a>",
+  "2016 GdR EMR École thématique — Le marché de gros de l'électricité: acteurs, mécanismes de soutien aux EMR et défis associés. Nantes. <a href='https://formationemr16.sciencesconf.org/browse/session?sessionid=20100' target='_blank' rel='noopener'>Link ↗</a>",
+  "2016 Sommet Climate Chance, Nantes — Laboratoire des initiatives nantaises, thématique Ville Active. <a href='https://www.climate-chance.org/sommets-coalitions/sommets-climate-chance/sommet-climate-chance-2016/' target='_blank' rel='noopener'>Link ↗</a>",
+];
+
+const coorg = [
+  "2028 Nantes — The Grand Maritime Convergence: Sobriety &amp; Innovation in Global Trade, Energy &amp; Ports. Under evaluation.",
+  "2025 — IAEE Paris, doctoral students session.",
+  "2025 — 3rd Conference on Decentralized Energy Systems, PSE.",
+  "2024 — AEE Students Workshop, Univ. de Grenoble. Jury member.",
+  "2024 — Ocean Next, session on Decarbonization of Maritime Transport (with C. Bagoulla).",
+  "2024 — IAE NU Séminaire: La décarbonation du transport maritime face au commerce international. With L. Lemiale, C. Devaux, J.-P. Nicolai.",
+  "2024 — AEE, Transport maritime décarboné, Nanterre. With F. Lantz (IFP), J.-P. Nicolai (INP Grenoble).",
+  "2023 — AEE Students Workshop, Univ. de Grenoble. Jury member.",
+  "2023 — ORACLE Éolien en mer, Nantes — session on the economics of offshore wind.",
+];
+
+const teachingCourses = ["Microeconomics (L2)","Macroeconomics (L2 MIASHS)","Energy Economics and Policy (M2 EEET)","Analyse de la transition énergétique (M1 EEET)","Economie circulaire (M1 EEET)","Economie du développement durable (L3 EGO-AE)","European Economy (L2 PI, L2 PE Droit)","Environmental microeconomics (L2 PI)","Oil and Coal Market Analysis (M2 FAI)","Economics of renewable energies (Engineers, ECN, IMT)","Economics of organisations, markets and institutions (L2 PI)","Economics for Business (L3 SG)"];
+
+const respProgramme = [
+  "2017–present — Head of Master 1, Economics of Environment, Energy and Transport (pedagogical coherence, student recruitment, guidance on specialisation, internships).",
+  "2015–2017 — Head of Master 1, Analysis of Economic Policies.",
+  "Jan–Sept 2020 — Head of Bachelor Programme (L2 International Track).",
+  "2020 — Chair, Admissions Committee, International Track Bachelor's (Parcoursup).",
+  "2015–2018 — Erasmus Programme Coordinator.",
+];
+
+const respGovernance = [
+  "Since 2021 — Member, Steering Committee (COMOP), IUML — Institut Universitaire Mer et Littoral (co-organiser of seminars and events on energy and maritime shipping economics).",
+  "Since 2022 — Member, Executive Committee (CODIR) and Scientific Council, GIS PERLE (contribution to research strategy and industry partnerships).",
+  "Since 2021 — Member, IAE Scientific Committee.",
+  "Since 2021 — LEMNA Laboratory Committee (contribution to laboratory governance).",
+];
+
+const respAxis = [
+  "Since 2026 — DEME axis coordination (Environment, Sea &amp; Energy Challenges), LEMNA.",
+];
+
+const phdList = [
+  {name:"Guewen Heslan", lab:"LEMNA", title:"Trade flow demand dynamics in gravity models. Effects on stakeholders' decarbonization strategies through a freight model for optimized ship dispatching.", co:"With Corinne Bagoulla and Pierre Marty."},
+  {name:"Arnaud Garnier", lab:"LHEEA", title:"Décarbonation du transport maritime mondial : simulation énergétique long terme de la flotte mondiale en vue de l'élaboration de scénarios de transition.", co:"With Pierre Marty and Jean-François Hetet (LHEEA)."},
+  {name:"Gabriel Blouet", lab:"LEMNA", title:"Modélisation des réseaux portuaires pour la définition de scénarios de transition énergétique vers la décarbonation des activités portuaires.", co:"With Virginie André (LERASS) and Didier Bédé (LEMNA)."},
+  {name:"Raphaël Guionie", lab:"LEMNA", title:"Industrial planning for infrastructural transition. Economic and ecosystem challenges for low-carbon hydrogen deployment.", co:"With Mathias Guérineau and Lionel Lemiale.", link:"https://theses.fr/s389272", linkLabel:"Defended 01/07/2025"},
+  {name:"Antoine Debille", lab:"LEMNA", title:"Multi-criteria optimisation of energy storage technologies. Case study of Segula-REMORA off-shore storage.", co:"With Lionel Lemiale and Thibault Neu.", link:"https://theses.fr/2024NANU3011", linkLabel:"Defended 07/06/2024"},
+  {name:"Racine Diatta", lab:"LEMNA", title:"Analysis of demand response for residential consumers in isolated microgrids: a game theoretical approach.", co:"With Lionel Richefort and Muriel Travers.", link:"https://theses.fr/2023NANU3002", linkLabel:"Defended 28/02/2023"},
+  {name:"Asma Dabbabi", lab:"IREENA-LEMNA-STX", title:"Optimization of Wind Farm Architectures with a DC Distribution and Transportation system.", co:"With M. Machmoum and S. Bourguet.", link:"https://theses.fr/s166239", linkLabel:"Defended 23/10/2020"},
+];
+
+const internships = [
+  {yr:"2026", name:"Gustave Nevez", title:"Impact inflationniste de la taxe carbone : outil open access.", link:"https://mahhejkjroenkvdzyhvxxh.streamlit.app/", linkLabel:"Tool ↗"},
+  {yr:"2025", name:"Pauline Nozay", title:"Analyse technico-économique des mécanismes d'interaction bi-directionnelle Vehicle-to-Grid et Grid-to-Vehicle dans un micro-réseau.", sub:"Vedecom–LEMNA.", link:"https://www.vedecom.fr/veh-06/", linkLabel:"Link ↗"},
+  {yr:"2024", name:"Martin Roux", title:"Impacts des tensions politiques sur le coût du fret.", link:"https://cargo-cluster.fr/medias/fichier/5-livrable-a4-martin-roux-vf_1719821657603-pdf?ID_FICHE=21415&INLINE=FALSE", linkLabel:"Report ↗"},
+  {yr:"2024", name:"Omar Banafa", title:"Estimation du productible éolien en mer sous contraintes de maintenance.", sub:"GEM–LEMNA.", link:"https://oracle-cluster.fr/offres-de-stage-hiver-2023", linkLabel:"Link ↗"},
+  {yr:"2022", name:"Jeanne Hagole", title:"Scénarisation de la production d'hydrogène à partir de l'éolien en mer.", sub:"LEMNA–FEM."},
+  {yr:"2021", name:"Raphaël Guionie", title:"Enjeux de massification de la production et la consommation de l'hydrogène dans la région des Pays de la Loire. Construction d'une modélisation et d'une représentation partagée de l'écosystème ligérien H2.", sub:"Agent contractuel."},
+  {yr:"2020", name:"James Pinder", title:"Impacts du développement des ENR intermittentes sur l'équilibre du système électrique français. Construction d'un simulateur de scénarios électriques.", link:"https://uncloud.univ-nantes.fr/index.php/s/rw47e9YoBGK5YyW", linkLabel:"Link ↗"},
+  {yr:"2019", name:"Corentin Simon", title:"Dimensionnement et optimisation d'une chaîne de production hydrogène couplée aux ENR dans la région des Pays de la Loire.", sub:"LEMNA."},
+  {yr:"2018", name:"Morgan Raffray", title:"Étude de la stratégie économique pour le développement d'un convertisseur de l'énergie du vent en haute mer.", sub:"École Centrale – LEMNA."},
+  {yr:"2016", name:"Lucille Bozec", title:"Diagnostic de vulnérabilité de l'île d'Yeu au changement climatique.", sub:"LEMNA–IGARUN–Mairie de l'Île d'Yeu."},
+  {yr:"2015", name:"Alexandre Gaillard", title:"Modélisation et évaluation économique de l'énergie marémotrice."},
+  {yr:"2015", name:"Maxime Jolivet", title:"Construction de la matrice de comptabilité sociale en France : intégration dans un modèle en équilibre général calculable sous GAMS."},
+  {yr:"2014", name:"Nezha Chemouri", title:"Optimisation du fonctionnement des technologies de production–stockage d'hydrogène : une analyse technico-économique ENR-H2."},
+  {yr:"2014", name:"Benjamin Egron", title:"L'impact des investissements en R&D énergétiques sur la croissance économique."},
+  {yr:"2014", name:"Oussama Saafi", title:"Prévisions de l'évolution du prix de l'électricité sur le marché européen : l'effet du stockage d'électricité.", sub:"Doctorant, Université de Sousse, Tunisie."},
+];
+
+const reviewerJournals = ["Energy Strategy Reviews","Journal of Cleaner Production","Nature Sustainability","Renewable and Sustainable Energy Transition","Journal of Sustainable Energy Planning and Management","Energy Policy","Nature Communications","IET Generation, Transmission & Distribution","International Journal of Energy Research","International Journal of Physical Sciences","Resources","Renewable Energy","International Journal of Hydrogen Energy","Utilities Policy","Inventions and Innovation in Electrical Engineering/Energy/Communications","Transportation Research Part D","Progress in Nuclear Energy","Annals of Nuclear Energy","Journal of Energy Storage"];
+
+const grantReview = [
+  "Reviewer, RIPEC 2026 (Maîtres de Conférences)",
+  "Reviewer, RIPEC 2026 (Professeurs)",
+  "AAPG ANR 2026 — AAP Région Nouvelle-Aquitaine (AAPR2026-2025)",
+  "Two ADEME projects (2025)",
+  "PhD project, ANRT (2025)",
+  "Projet ANR (2019)",
+];
+
+const committees = [
+  "2025 — Member, COS MCF (Microeconomics), Université de Franche-Comté",
+  "2024 — Chair, COS MCF (Math-Economics), IAE Nantes",
+  "2022 — Member, COS MCF (Sustainable Development, Energy), Université Paris Nanterre",
+  "2019 — Member, COS MCF (Energy Economics), Université Paris Nanterre",
+  "2016 — Member, COS MCF (General & Social Economics, Economic Policy), IPAG Nantes",
+];
+
+const juries = [
+  {role:"Rapporteure", who:"Aanchal Jain", date:"22/06/2026", desc:"“Economics of marine plastics: assessing drivers, impacts and policy responses.” Jury: R. Loisel (rapporteure), J.-M. Salles (rapporteur), M.-E. Binet (présidente), A.-C. Vaissière (examinatrice)."},
+  {role:"Rapporteure", who:"Milien Dhorne", date:"5/12/2025", desc:"“Energy in good time. Essays on innovation, diffusion, and policy for energy storage in Europe,” Univ. Paris Nanterre. Jury: C. Clastres (rapporteur), C. Le Coq, R. Loisel (rapporteure), L. Ragot (président), M. Baudry (directeur)."},
+  {role:"Examinatrice", who:"Thibault Deletombe", date:"13/05/2025", desc:"“Long-term energy transition: economic analysis on the integration of renewable energies, storage and their systemic effects,” Univ. Paris Dauphine. Jury: F. Lantz, C. Clastres (rapporteurs), A. Créti, R. Loisel (examinatrices), P. Azaïs (examinateur), J. Yu (encadrante), P. Geoffron (directeur)."},
+  {role:"Examinatrice HDR", who:"Samira Rousselière", date:"16/07/2024", desc:"LEMNA–ONIRIS. “Contributions à une analyse économique de la transition vers l'économie circulaire.” Jury: D. Galliano, L. Sauvée, M. Maillefert (rapporteures/rapporteur), K. Latouche (directrice), R. Loisel (examinatrice), E. Raufflet (président)."},
+  {role:"Rapporteure", who:"Arthur Lynch", date:"13/12/2022", desc:"Ingénierie des systèmes complexes, Univ. Paris-Saclay – CentraleSupélec. “Nuclear in decarbonized power systems with renewable energy.” Jury: P. da Costa (président), P. Geoffron, R. Loisel (rapporteurs), P. Criqui, J. Jenkins, O. Massol (examinateurs), G. Mathonnière (directeur), V. Rious (membre)."},
+  {role:"Rapporteure", who:"Adrian Ruiz Carvajal", date:"10/10/2022", desc:"Sciences économiques, GAEL Grenoble. “Household Valuation of Electricity Attributes: Theory, Meta-analysis and Experimental Approaches.” Jury: S. Robin (directeur), R. Loisel, Y. Pérez (rapporteurs), C. Clastres (président), F. Wurtz, V. Lesgards (membres)."},
+  {role:"Évaluatrice", who:"Gabin Mantulet", date:"4/06/2020", desc:"Ingénierie – environnement, énergie, LPSC IN2P3, GAEL Grenoble. “La contribution des gaz renouvelables à la décarbonation des systèmes énergétiques.” Jury: S. Mathy (présidente), Y. Pérez, P. Géoffron (rapporteurs), F. Lefebvre, R. Loisel (examinatrices), A. Bidaud, S. Mima (membres)."},
+];
+
+const csiMembers = "Albin Gagnepain (CMA – Mines Paris – PSL) · Maël Ollivier (INRAE) · Maïelise Presse (LEMNA) · Julien Beurrier (LTEN-LS2N, NU) · Lauga Wangen (GAEL, Univ. Grenoble)";
+
+/* ---------------- RENDER ---------------- */
+
+function el(html){const t=document.createElement('template');t.innerHTML=html.trim();return t.content.firstChild;}
+
+function renderTimeline(id, items){
+  const c = document.getElementById(id);
+  items.forEach(it=>{
+    c.appendChild(el(`<div class="tl-item">
+      <div class="yr">${it.yr}</div>
+      <div class="ttl">${it.ttl}</div>
+      <div class="sub">${it.sub}</div>
+      ${it.desc?`<div class="desc">${it.desc}</div>`:''}
+    </div>`));
+  });
+}
+renderTimeline('exp-tl', experience);
+renderTimeline('edu-tl', education);
+
+// Publications + filters
+let activeFilter = 'all';
+function badgeClass(r){return r;}
+function renderPubs(){
+  const list = document.getElementById('pub-list');
+  list.innerHTML='';
+  const filtered = activeFilter==='all' ? publications : publications.filter(p=>p.rank===activeFilter);
+  filtered.forEach(p=>{
+    list.appendChild(el(`<div class="pub">
+      <div class="yr">${p.yr}</div>
+      <div class="body">
+        <div class="title">${p.authors}. ${p.title}</div>
+        <div class="venue">${p.venue}${p.doi?` — <a href="${p.doi}" target="_blank" rel="noopener">doi ↗</a>`:''}</div>
+      </div>
+      <div class="badges"><span class="badge ${badgeClass(p.rank)}">${rankLabels[p.rank]}</span></div>
+    </div>`));
+  });
+}
+const filterDefs = [['all','All (21)'],['a','Rang A'],['q1','Q1 SJR'],['c','Rang C'],['b','Rang B']];
+const filterRow = document.getElementById('pub-filters');
+filterDefs.forEach(([key,label])=>{
+  const btn = el(`<button class="filter-btn${key==='all'?' active':''}" data-key="${key}">${label}</button>`);
+  btn.addEventListener('click',()=>{
+    activeFilter = key;
+    [...filterRow.children].forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderPubs();
+  });
+  filterRow.appendChild(btn);
+});
+renderPubs();
+
+function renderPlain(id, items){
+  const c = document.getElementById(id);
+  items.forEach(txt=>c.appendChild(el(`<li>${txt}</li>`)));
+}
+renderPlain('resp-programme', respProgramme);
+renderPlain('resp-governance', respGovernance);
+renderPlain('resp-axis', respAxis);
+renderPlain('under-revision', underRevision);
+renderPlain('ongoing-wp', ongoingWP);
+renderPlain('oa-wp', oaWP);
+renderPlain('collective', collective);
+renderPlain('conf-list', conferences);
+renderPlain('coorg-list', coorg);
+renderPlain('grant-review', grantReview);
+renderPlain('committees', committees);
+
+// Contracts
+const contractList = document.getElementById('contract-list');
+contracts.forEach(c=>{
+  contractList.appendChild(el(`<div class="grant">
+    <b>${c.name}</b>${c.period?` <span style="color:var(--muted);font-size:13px;">(${c.period})</span>`:''}
+    ${c.amt?`<span class="amt"> · ${c.amt}</span>`:''}
+    <div style="color:var(--muted);font-size:13.5px;margin-top:2px;">${c.desc}</div>
+  </div>`));
+});
+
+// Teaching tags
+const teachingTags = document.getElementById('teaching-tags');
+teachingCourses.forEach(t=>teachingTags.appendChild(el(`<span>${t}</span>`)));
+
+// PhD list
+const phdListEl = document.getElementById('phd-list');
+phdList.forEach(p=>{
+  phdListEl.appendChild(el(`<li>
+    <b>${p.name}</b> <span style="color:var(--muted);font-size:12.5px;">(${p.lab})</span><br>
+    <span style="color:var(--muted);">${p.title}</span><br>
+    <span style="font-size:13px;color:var(--faint);font-style:italic;">${p.co}</span>
+    ${p.link?` — <a href="${p.link}" target="_blank" rel="noopener">${p.linkLabel} ↗</a>`:''}
+  </li>`));
+});
+
+// Internship supervision
+const internshipListEl = document.getElementById('internship-list');
+internships.forEach(it=>{
+  internshipListEl.appendChild(el(`<li>
+    <span class="tag">${it.yr}</span><b>${it.name}</b><br>
+    <span style="color:var(--muted);">${it.title}</span>
+    ${it.sub?`<br><span style="font-size:13px;color:var(--faint);font-style:italic;">${it.sub}</span>`:''}
+    ${it.link?` — <a href="${it.link}" target="_blank" rel="noopener">${it.linkLabel}</a>`:''}
+  </li>`));
+});
+
+// Reviewer tags
+const reviewerTags = document.getElementById('reviewer-tags');
+reviewerJournals.forEach(j=>reviewerTags.appendChild(el(`<span>${j}</span>`)));
+
+// Juries
+const juriesEl = document.getElementById('juries');
+juries.forEach(j=>{
+  juriesEl.appendChild(el(`<li><span class="tag">${j.role} — ${j.date}</span><br><b>${j.who}</b><br><span style="color:var(--muted);">${j.desc}</span></li>`));
+});
+
+document.getElementById('csi').textContent = csiMembers;
+</script>
+
+</body>
+</html>
