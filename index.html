@@ -645,7 +645,7 @@ function renderPubs(){
     </div>`));
   });
 }
-const filterDefs = [['all','All (21)'],['a','Rang A'],['q1','Q1 SJR'],['c','Rang C'],['b','Rang B']];
+const filterDefs = [['all','All (21)'],['a','Rang A'],['b','Rang B'],['c','Rang C'],['q1','Q1 SJR']];
 const filterRow = document.getElementById('pub-filters');
 filterDefs.forEach(([key,label])=>{
   const btn = el(`<button class="filter-btn${key==='all'?' active':''}" data-key="${key}">${label}</button>`);
